@@ -52,8 +52,3 @@ def read_fake_file(file_path):
 
             if key == 'OBS':
                 obs.append(tuple(value))
-
-
-if __name__ == "__main__":
-    read_fake_file("/Users/szymon/Dropbox/Projects/DES/data/fakes/"
-                   "des_fake_00234999.dat")

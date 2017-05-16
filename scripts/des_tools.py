@@ -2,8 +2,10 @@
 Miscellenious helper functions specifically for the use with DES
 """
 import numpy as np
+from numba import jit
 
 
+@jit
 def mjd_to_season(mjd):
     """
     Find a corresponding DES observing season for a given MJD
@@ -37,6 +39,7 @@ def mjd_to_season(mjd):
         return 0
 
 
+@jit
 def parse_status_code(status_code):
     """
     Parse DES image quality status code into an array of individual flags
@@ -64,6 +67,7 @@ def parse_status_code(status_code):
     return status_flags
 
 
+@jit
 def get_status_quality(status_code):
     """
     Convert photometric quality status code into a simpler output:
