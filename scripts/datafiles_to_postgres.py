@@ -79,9 +79,32 @@ def create_tables(prefix, cursor):
     cursor.execute(create_obs_table.format(prefix))
 
 
+def create_indexs(prefix, cursor):
+    query = "CREATE INDEX {0}_snid on {0}_obs(snid)"
+    cursor.execute(query.format(prefix))
+
+    query = "CREATE INDEX {0}_name on {0}_obs(name)"
+    cursor.execute(query.format(prefix))
+
+    query = "CREATE INDEX {0}_obslog on {0}_obs(mjd, field, ccd, band)"
+    cursor.execute(query.format(prefix))
+
+    query = "CREATE INDEX {0}_idsearch on {0}_obs(snid, mjd, band)"
+    cursor.execute(query.format(prefix))
+
+    query = "CREATE INDEX {0}_namesearch on {0}_obs(name, mjd, band)"
+    cursor.execute(query.format(prefix))
+
+    query = "CREATE UNIQUE INDEX {0}_prop_snid on {0}_props(snid)"
+    cursor.execute(query.format(prefix))
+
+    query = "CREATE INDEX {0}_prop_name on {0}_props(name)"
+    cursor.execute(query.format(prefix))
+
+
 if __name__ == "__main__":
-    table_prefix = 'des'
-    path = '/Users/szymon/Dropbox/Projects/DES/data/snana/'
+    table_prefix = 'fake_Ia'
+    path = '/Users/szymon/Dropbox/Projects/DES/data/fakes/'
     files = os.listdir(path)
 
     if '.DS_Store' in files:
@@ -116,4 +139,5 @@ if __name__ == "__main__":
         psycopg2.extras.execute_values(cur, query, obs)
         conn.commit()
 
+    create_indexs(table_prefix, cur)
     conn.close()
