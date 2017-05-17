@@ -21,6 +21,9 @@ def split_textfile_line(text_line):
 def parse_snana_line(snana_line):
     """
     Parse a line from SNANA
+
+    Parameters
+    ----------
     """
     key, value = split_textfile_line(snana_line)
 
@@ -39,7 +42,7 @@ def read_fake_file(file_path):
     """
     Read a single fake file
 
-    Properties
+    Parameters
     ----------
     file_path : str
         Path to the fake SN data file
@@ -52,3 +55,5 @@ def read_fake_file(file_path):
 
             if key == 'OBS':
                 obs.append(tuple(value))
+
+    return obs

@@ -10,7 +10,7 @@ def mjd_to_season(mjd):
     """
     Find a corresponding DES observing season for a given MJD
 
-    Properties
+    Parameters
     ----------
     mjd : float
         MJD of an observation
@@ -44,8 +44,8 @@ def parse_status_code(status_code):
     """
     Parse DES image quality status code into an array of individual flags
 
-    Properies
-    ---------
+    Parameters
+    ----------
     status_code : int
         DES image quality status code
 
@@ -75,7 +75,7 @@ def get_status_quality(status_code):
     1 : good photometry
     2 : good photometry + real-time detection
 
-    Properties
+    Parameters
     ----------
     status_code : int
         DES image quality status code
