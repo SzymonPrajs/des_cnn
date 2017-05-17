@@ -110,8 +110,9 @@ def query_desdm(query):
     query : str
         Query to be executed
 
-    Returns : `pandas.DataFrame`
+    Returns
     -------
+    data : `pandas.DataFrame`
         DataFrame object containing queried data
     """
     conn = ea.connect()
@@ -129,8 +130,9 @@ def query_localdb(query):
     query : str
         Query to be executed
 
-    Returns : `pandas.DataFrame`
+    Returns
     -------
+    data : `pandas.DataFrame`
         DataFrame object containing queried data
     """
     conn = db.connect(host='localhost',
@@ -146,3 +148,27 @@ def query_localdb(query):
 
     conn.close()
     return data
+
+
+def band_colour(band):
+    """
+    Return a pretty colour for a DES photometric band
+
+    Parameters
+    ----------
+    band : char
+        Photometric band. Must be griz
+
+    Returns
+    -------
+    col : str
+        Colour hex value for a given band
+    """
+    col = {
+        'g': "#59D11D",
+        'r': "#F2990A",
+        'i': "#A61C00",
+        'z': "#000000"
+    }
+
+    return col[band]
