@@ -94,8 +94,9 @@ def read_des_photometry_file(file_path):
     Returns
     -------
     observations : list
-        List of tuples containing: (mjd, band, field, flux, fluxerr, phot_prob,
-            zp, psf, skysig, template_skysig, gain, season, phot_quality, ccd)
+        List of tuples containing: (mjd, band, field, flux, fluxerr, phot_flag,
+            phot_prob, zp, psf, skysig, template_skysig, gain, season,
+            phot_quality, ccd)
 
     properties : tuple
         List containing: (snid, IAUC_name, fake_flag, field, ccd_num,
@@ -139,8 +140,8 @@ def read_des_photometry_file(file_path):
 
             elif key == 'OBS':
                 value.append(properties[4])  # CCD number
-                observations.append(tuple(value))
+                observations.append(tuple(properties[0:2]) + tuple(value))
 
-        properties[3] = observations[0][2]
+        properties[3] = observations[0][4]
 
     return tuple(properties), observations
