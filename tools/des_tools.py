@@ -2,7 +2,10 @@
 Miscellenious helper functions specifically for the use with DES
 """
 import numpy as np
+import pandas as pd
+import psycopg2 as db
 from numba import jit
+import easyaccess as ea
 
 
 @jit
@@ -95,3 +98,51 @@ def get_status_quality(status_code):
 
     else:
         return 1
+
+
+def query_desdm(query):
+    """
+    Very basic wrapper around easy access to perform queries returning
+    pandas.DataFrame objects.
+
+    Parameters
+    ----------
+    query : str
+        Query to be executed
+
+    Returns : `pandas.DataFrame`
+    -------
+        DataFrame object containing queried data
+    """
+    conn = ea.connect()
+
+    return conn.query_to_pandas(query)
+
+
+def query_localdb(query):
+    """
+    Simple engine for querying a local database containing the DES data (both
+    real and fakes).
+
+    Parameters
+    ----------
+    query : str
+        Query to be executed
+
+    Returns : `pandas.DataFrame`
+    -------
+        DataFrame object containing queried data
+    """
+    conn = db.connect(host='localhost',
+                      user='szymon',
+                      password='supernova',
+                      database='des')
+    cur = conn.cursor()
+
+    cur.execute(query)
+    header = [columns[0] for columns in cur.description]
+    data = pd.DataFrame(cur.fetchall())
+    data.columns = header
+
+    conn.close()
+    return data
