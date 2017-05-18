@@ -145,6 +145,7 @@ def query_localdb(query):
     header = [columns[0] for columns in cur.description]
     data = pd.DataFrame(cur.fetchall())
     data.columns = header
+    data.dropna(inplace=True)
 
     conn.close()
     return data
