@@ -144,6 +144,10 @@ def query_localdb(query):
     cur.execute(query)
     header = [columns[0] for columns in cur.description]
     data = pd.DataFrame(cur.fetchall())
+
+    if data.shape[1] != len(header):
+        return None
+
     data.columns = header
     data.dropna(inplace=True)
 
