@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
         for i in range(agn.size):
             field, ccd = random_field()
-            i = 48
+
             for flt in ['G', 'R', 'I', 'Z']:
                 mjd = agn[i][flt]['epoch'][0] + 56450
                 flux = 10**(0.4*(31.4 - agn[i][flt]['mag'][0]))
