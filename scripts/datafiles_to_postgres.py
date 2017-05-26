@@ -10,6 +10,7 @@ from time import time
 from tools.read_snana_files import read_des_photometry_file
 
 
+# TODO : Move to a separate misc tools file
 def progress(count, total, status=''):
     bar_len = 60
     filled_len = int(round(bar_len * count / float(total)))

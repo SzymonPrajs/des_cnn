@@ -177,3 +177,8 @@ def band_colour(band):
     }
 
     return col[band]
+
+
+def random_field():
+    field = ['C1', 'C2', 'C3', 'E1', 'E2', 'S1', 'S2', 'X1', 'X2', 'X3']
+    return field[np.random.randint(10)], np.random.randint(1, 63)
