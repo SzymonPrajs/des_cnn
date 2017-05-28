@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 import scipy.io as io
 import psycopg2 as db
-import psycopg2.extras
 import matplotlib.pyplot as plt
 from lcsim.lcsim import LCSim
 from lcsim.simlib import SIMLIBReader
@@ -96,7 +95,8 @@ if __name__ == "__main__":
     for agn_file in agn_files:
         agn = io.readsav(path + agn_file)['lc_agn']
         lc = LCSim()
-        simlib = SIMLIBReader('/Users/szymon/Dropbox/Projects/SigNS/DES_20170316.SIMLIB')
+        simlib_path = '/Users/szymon/Dropbox/Projects/SigNS/'
+        simlib = SIMLIBReader(simlib_path + 'DES_20170316.SIMLIB')
         print('loaded', agn_file)
 
         for i in range(agn.size):
@@ -106,16 +106,25 @@ if __name__ == "__main__":
                 mjd = agn[i][flt]['epoch'][0] + 56450
                 flux = 10**(0.4*(31.4 - agn[i][flt]['mag'][0]))
 
-                T1 = template.query("field == '{}' and filter == '{}' and season == 1".format(field, flt.lower()))['mjd'].astype(int).unique()
-                T2 = template.query("field == '{}' and filter == '{}' and season == 2".format(field, flt.lower()))['mjd'].astype(int).unique()
+                mask = ((template['field'] == field) &
+                        (template['filter'] == flt.lower()) &
+                        (template['season'] == 1))
+                T1 = template[mask]['mjd'].astype(int).unique()
+                mask = ((template['field'] == field) &
+                        (template['filter'] == flt.lower()) &
+                        (template['season'] == 2))
+                T2 = template[mask]['mjd'].astype(int).unique()
+
                 idx = np.searchsorted(mjd, T1)
                 T1_median = np.median(flux[idx])
                 idx = np.searchsorted(mjd, T2)
                 T2_median = np.median(flux[idx])
 
                 obs = simlib.get_obslog(field, ccd, band=flt.lower())
-                Y1 = np.searchsorted(mjd, obs.query('mjd < 56700 or mjd > 57200')['mjd'].astype(int))
-                Y2 = np.searchsorted(mjd, obs.query('mjd > 56700 and mjd < 57200')['mjd'].astype(int))
+                mask = (obs[mjd] < 56700) | (obs[mjd] > 57200)
+                Y1 = np.searchsorted(mjd, obs[mask]['mjd'].astype(int))
+                mask = (obs[mjd] > 56700) & (obs[mjd] < 57200)
+                Y2 = np.searchsorted(mjd, obs[mask]['mjd'].astype(int))
                 np.put(flux, Y2, flux[Y2] - T1_median)
                 np.put(flux, Y1, flux[Y1] - T2_median)
 
