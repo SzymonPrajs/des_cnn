@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 import scipy.io as io
 import psycopg2 as db
-import matplotlib.pyplot as plt
 from lcsim.lcsim import LCSim
 from lcsim.simlib import SIMLIBReader
 from tools.des_tools import random_field
@@ -101,7 +100,7 @@ if __name__ == "__main__":
 
         for i in range(agn.size):
             field, ccd = random_field()
-
+            print(field, ccd, i)
             for flt in ['G', 'R', 'I', 'Z']:
                 mjd = agn[i][flt]['epoch'][0] + 56450
                 flux = 10**(0.4*(31.4 - agn[i][flt]['mag'][0]))
@@ -121,19 +120,19 @@ if __name__ == "__main__":
                 T2_median = np.median(flux[idx])
 
                 obs = simlib.get_obslog(field, ccd, band=flt.lower())
-                mask = (obs[mjd] < 56700) | (obs[mjd] > 57200)
-                Y1 = np.searchsorted(mjd, obs[mask]['mjd'].astype(int))
-                mask = (obs[mjd] > 56700) & (obs[mjd] < 57200)
+                mask = (obs['mjd'] < 56700) | (obs['mjd'] > 57200)
+                Y1 = np.searchsorted(mjd, obs.loc[mask, 'mjd'].astype(int))
+                mask = (obs['mjd'] > 56700) & (obs['mjd'] < 57200)
                 Y2 = np.searchsorted(mjd, obs[mask]['mjd'].astype(int))
                 np.put(flux, Y2, flux[Y2] - T1_median)
                 np.put(flux, Y1, flux[Y1] - T2_median)
 
                 idx = np.searchsorted(mjd, obs['mjd'].astype(int))
                 fluxcal, errcal = lc.simulate(flux[idx], obs)
-                plt.errorbar(mjd[idx], fluxcal, yerr=errcal, fmt='o')
-            break
+
+            if i == 50:
+                break
 
         print('parsed', agn_file)
         break
     conn.close()
-    plt.show()

@@ -6,6 +6,7 @@ import pandas as pd
 import psycopg2 as db
 from numba import jit
 import easyaccess as ea
+from itertools import chain
 
 
 @jit
@@ -181,4 +182,5 @@ def band_colour(band):
 
 def random_field():
     field = ['C1', 'C2', 'C3', 'E1', 'E2', 'S1', 'S2', 'X1', 'X2', 'X3']
-    return field[np.random.randint(10)], np.random.randint(1, 63)
+    ccd_range = chain(range(1, 2), range(3, 31), range(32, 61), range(62, 63))
+    return field[np.random.randint(10)], np.random.choice(list(ccd_range))
