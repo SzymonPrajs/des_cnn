@@ -3,13 +3,15 @@ Load fake AGN light curves into a PSQL database after applying observing logs
 and correcting for template offsets
 """
 import os
+import datetime
 import numpy as np
 import pandas as pd
 import scipy.io as io
 import psycopg2 as db
 from lcsim.lcsim import LCSim
 from lcsim.simlib import SIMLIBReader
-from tools.des_tools import random_field
+from sqlalchemy import create_engine
+from tools.des_tools import random_field, mjd_to_season
 
 
 def create_tables(cursor):
@@ -86,21 +88,44 @@ if __name__ == "__main__":
     create_tables(cur)
     conn.commit()
 
+    engine = create_engine('postgresql://szymon:supernova@localhost:5432/des')
+
     template_csv = '/Users/szymon/Dropbox/Projects/DES/data/refListMJD.txt'
     template = pd.read_csv(template_csv)
 
     prop = []
     obs = []
+    snid = 0
     for agn_file in agn_files:
+        now = datetime.datetime.now().isoformat().split('T')[1].split('.')[0]
+        print(now, '- Reading', agn_file)
         agn = io.readsav(path + agn_file)['lc_agn']
         lc = LCSim()
         simlib_path = '/Users/szymon/Dropbox/Projects/SigNS/'
         simlib = SIMLIBReader(simlib_path + 'DES_20170316.SIMLIB')
-        print('loaded', agn_file)
+        now = datetime.datetime.now().isoformat().split('T')[1].split('.')[0]
+        print(now, '- Loaded', agn_file)
 
         for i in range(agn.size):
+            snid += 1
             field, ccd = random_field()
-            print(field, ccd, i)
+            df = pd.DataFrame({'snid': [],
+                               'name': [],
+                               'mjd': [],
+                               'band': [],
+                               'field': [],
+                               'flux': [],
+                               'fluxerr': [],
+                               'zp': [],
+                               'psf': [],
+                               'skysig': [],
+                               'skysig_t': [],
+                               'gain': [],
+                               'season': [],
+                               'status': [],
+                               'ccd': []
+                               })
+
             for flt in ['G', 'R', 'I', 'Z']:
                 mjd = agn[i][flt]['epoch'][0] + 56450
                 flux = 10**(0.4*(31.4 - agn[i][flt]['mag'][0]))
@@ -130,9 +155,38 @@ if __name__ == "__main__":
                 idx = np.searchsorted(mjd, obs['mjd'].astype(int))
                 fluxcal, errcal = lc.simulate(flux[idx], obs)
 
-            if i == 50:
-                break
+                temp_df = pd.DataFrame()
+                temp_df['mjd'] = obs['mjd']
+                temp_df['band'] = obs['flt']
+                temp_df['field'] = field
+                temp_df['flux'] = fluxcal
+                temp_df['fluxerr'] = errcal
+                temp_df['zp'] = obs['zps']
+                temp_df['psf'] = obs['psf1']
+                temp_df['skysig'] = obs['skysigs']
+                temp_df['skysig_t'] = obs['skysigt']
+                temp_df['gain'] = obs['gain']
+                temp_df['season'] = temp_df['mjd'].map(mjd_to_season)
+                temp_df['status'] = 1
+                temp_df['ccd'] = ccd
+                temp_df['snid'] = snid
+                temp_df['name'] = 'fake_agn_'+str(snid)
 
-        print('parsed', agn_file)
-        break
+                df = pd.concat((df, temp_df))
+
+            detected = df[df.flux/df.fluxerr > 5]
+            if detected.shape[0] > 1:
+                sorted_mjd = detected.mjd.values
+                sorted_mjd.sort()
+                sorted_separation = np.diff(sorted_mjd)
+                sorted_separation.sort()
+
+                if sorted_separation[0] < 30:
+                    df.to_sql('agn_test',
+                              engine,
+                              if_exists='append',
+                              index=False)
+
+        now = datetime.datetime.now().isoformat().split('T')[1].split('.')[0]
+        print(now, '- Parsed', agn_file)
     conn.close()
