@@ -107,85 +107,87 @@ if __name__ == "__main__":
         print(now, '- Loaded', agn_file)
 
         for i in range(agn.size):
-            snid += 1
-            field, ccd = random_field()
-            df = pd.DataFrame({'snid': [],
-                               'name': [],
-                               'mjd': [],
-                               'band': [],
-                               'field': [],
-                               'flux': [],
-                               'fluxerr': [],
-                               'zp': [],
-                               'psf': [],
-                               'skysig': [],
-                               'skysig_t': [],
-                               'gain': [],
-                               'season': [],
-                               'status': [],
-                               'ccd': []
-                               })
+            for _ in range(10):
+                snid += 1
+                field, ccd = random_field()
+                df = pd.DataFrame({'snid': [],
+                                   'name': [],
+                                   'mjd': [],
+                                   'band': [],
+                                   'field': [],
+                                   'flux': [],
+                                   'fluxerr': [],
+                                   'zp': [],
+                                   'psf': [],
+                                   'skysig': [],
+                                   'skysig_t': [],
+                                   'gain': [],
+                                   'season': [],
+                                   'status': [],
+                                   'ccd': []
+                                   })
 
-            for flt in ['G', 'R', 'I', 'Z']:
-                mjd = agn[i][flt]['epoch'][0] + 56450
-                flux = 10**(0.4*(31.4 - agn[i][flt]['mag'][0]))
+                for flt in ['G', 'R', 'I', 'Z']:
+                    mjd = agn[i][flt]['epoch'][0]
+                    mjd += np.random.randint(56400, 56500)
+                    flux = 10**(0.4*(31.4 - agn[i][flt]['mag'][0]))
 
-                mask = ((template['field'] == field) &
-                        (template['filter'] == flt.lower()) &
-                        (template['season'] == 1))
-                T1 = template[mask]['mjd'].astype(int).unique()
-                mask = ((template['field'] == field) &
-                        (template['filter'] == flt.lower()) &
-                        (template['season'] == 2))
-                T2 = template[mask]['mjd'].astype(int).unique()
+                    mask = ((template['field'] == field) &
+                            (template['filter'] == flt.lower()) &
+                            (template['season'] == 1))
+                    T1 = template[mask]['mjd'].astype(int).unique()
+                    mask = ((template['field'] == field) &
+                            (template['filter'] == flt.lower()) &
+                            (template['season'] == 2))
+                    T2 = template[mask]['mjd'].astype(int).unique()
 
-                idx = np.searchsorted(mjd, T1)
-                T1_median = np.median(flux[idx])
-                idx = np.searchsorted(mjd, T2)
-                T2_median = np.median(flux[idx])
+                    idx = np.searchsorted(mjd, T1)
+                    T1_median = np.median(flux[idx])
+                    idx = np.searchsorted(mjd, T2)
+                    T2_median = np.median(flux[idx])
 
-                obs = simlib.get_obslog(field, ccd, band=flt.lower())
-                mask = (obs['mjd'] < 56700) | (obs['mjd'] > 57200)
-                Y1 = np.searchsorted(mjd, obs.loc[mask, 'mjd'].astype(int))
-                mask = (obs['mjd'] > 56700) & (obs['mjd'] < 57200)
-                Y2 = np.searchsorted(mjd, obs[mask]['mjd'].astype(int))
-                np.put(flux, Y2, flux[Y2] - T1_median)
-                np.put(flux, Y1, flux[Y1] - T2_median)
+                    obs = simlib.get_obslog(field, ccd, band=flt.lower())
+                    mask = (obs['mjd'] < 56700) | (obs['mjd'] > 57200)
+                    Y1 = np.searchsorted(mjd, obs.loc[mask, 'mjd'].astype(int))
+                    mask = (obs['mjd'] > 56700) & (obs['mjd'] < 57200)
+                    Y2 = np.searchsorted(mjd, obs[mask]['mjd'].astype(int))
+                    np.put(flux, Y2, flux[Y2] - T1_median)
+                    np.put(flux, Y1, flux[Y1] - T2_median)
 
-                idx = np.searchsorted(mjd, obs['mjd'].astype(int))
-                fluxcal, errcal = lc.simulate(flux[idx], obs)
+                    idx = np.searchsorted(mjd, obs['mjd'].astype(int))
+                    fluxcal, errcal = lc.simulate(flux[idx], obs)
 
-                temp_df = pd.DataFrame()
-                temp_df['mjd'] = obs['mjd']
-                temp_df['band'] = obs['flt']
-                temp_df['field'] = field
-                temp_df['flux'] = fluxcal
-                temp_df['fluxerr'] = errcal
-                temp_df['zp'] = obs['zps']
-                temp_df['psf'] = obs['psf1']
-                temp_df['skysig'] = obs['skysigs']
-                temp_df['skysig_t'] = obs['skysigt']
-                temp_df['gain'] = obs['gain']
-                temp_df['season'] = temp_df['mjd'].map(mjd_to_season)
-                temp_df['status'] = 1
-                temp_df['ccd'] = ccd
-                temp_df['snid'] = snid
-                temp_df['name'] = 'fake_agn_'+str(snid)
+                    temp_df = pd.DataFrame()
+                    temp_df['mjd'] = obs['mjd']
+                    temp_df['band'] = obs['flt']
+                    temp_df['field'] = field
+                    temp_df['flux'] = fluxcal
+                    temp_df['fluxerr'] = errcal
+                    temp_df['zp'] = obs['zps']
+                    temp_df['psf'] = obs['psf1']
+                    temp_df['skysig'] = obs['skysigs']
+                    temp_df['skysig_t'] = obs['skysigt']
+                    temp_df['gain'] = obs['gain']
+                    temp_df['season'] = temp_df['mjd'].map(mjd_to_season)
+                    temp_df['status'] = 1
+                    temp_df['ccd'] = ccd
+                    temp_df['snid'] = snid
+                    temp_df['name'] = 'fake_agn_'+str(snid)
 
-                df = pd.concat((df, temp_df))
+                    df = pd.concat((df, temp_df))
 
-            detected = df[df.flux/df.fluxerr > 5]
-            if detected.shape[0] > 1:
-                sorted_mjd = detected.mjd.values
-                sorted_mjd.sort()
-                sorted_separation = np.diff(sorted_mjd)
-                sorted_separation.sort()
+                detected = df[df.flux/df.fluxerr > 5]
+                if detected.shape[0] > 1:
+                    sorted_mjd = detected.mjd.values
+                    sorted_mjd.sort()
+                    sorted_separation = np.diff(sorted_mjd)
+                    sorted_separation.sort()
 
-                if sorted_separation[0] < 30:
-                    df.to_sql('agn_test',
-                              engine,
-                              if_exists='append',
-                              index=False)
+                    if sorted_separation[0] < 30:
+                        df.to_sql('agn_10_realisations',
+                                  engine,
+                                  if_exists='append',
+                                  index=False)
 
         now = datetime.datetime.now().isoformat().split('T')[1].split('.')[0]
         print(now, '- Parsed', agn_file)
