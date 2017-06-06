@@ -35,11 +35,10 @@ def gp_des_lc(data):
         edge_query = edges[mask]
         min_edge = edge_query['min_mjd'].values[0]
 
-        if (obs['mjd'].min() > (min_edge + 2) or
-           (min_edge + 147) > obs['mjd'].max()):
-            print(min_edge + 2, min_edge + 147)
+        if (int(obs['mjd'].min()) > min_edge or
+           int(obs['mjd'].max()) < (min_edge + 149)):
+            print(min_edge, min_edge + 149)
             print(obs['mjd'].min(), obs['mjd'].max())
-            print(obs['snid'].values[0])
             return
 
         flux_norm = obs['flux'].mean()
@@ -68,16 +67,16 @@ def gp_des_lc(data):
 
         df = pd.concat((df, temp_df))
 
-    df.to_sql('fake_ia_interp_2', engine, if_exists='append', index=False)
+    df.to_sql('agn_10_interp', engine, if_exists='append', index=False)
 
 
-query = "SELECT DISTINCT snid FROM fake_ia_obs"
+query = "SELECT DISTINCT snid FROM agn_10_realisations"
 fake_ia = des.query_localdb(query)['snid'].values
 
 for i, snid in enumerate(fake_ia):
     print(i, snid)
 
-    query = "SELECT * FROM fake_ia_obs WHERE snid={}".format(int(snid))
+    query = "SELECT * FROM agn_10_realisations WHERE snid={}".format(int(snid))
     data = des.query_localdb(query)
 
     if data is None:

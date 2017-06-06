@@ -3,6 +3,7 @@ Load fake AGN light curves into a PSQL database after applying observing logs
 and correcting for template offsets
 """
 import os
+import copy
 import datetime
 import numpy as np
 import pandas as pd
@@ -128,7 +129,7 @@ if __name__ == "__main__":
                                    })
 
                 for flt in ['G', 'R', 'I', 'Z']:
-                    mjd = agn[i][flt]['epoch'][0]
+                    mjd = copy.deepcopy(agn[i][flt]['epoch'][0])
                     mjd += np.random.randint(56400, 56500)
                     flux = 10**(0.4*(31.4 - agn[i][flt]['mag'][0]))
 
@@ -188,6 +189,11 @@ if __name__ == "__main__":
                                   engine,
                                   if_exists='append',
                                   index=False)
+
+            if i % 1000 == 0:
+                now = datetime.datetime.now()
+                now = now.isoformat().split('T')[1].split('.')[0]
+                print(now, '- SNID progress:', str(i)+'/'+str(agn.size))
 
         now = datetime.datetime.now().isoformat().split('T')[1].split('.')[0]
         print(now, '- Parsed', agn_file)
