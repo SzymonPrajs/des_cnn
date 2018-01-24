@@ -54,7 +54,8 @@ def gp_des_lc(data):
         p0 = gp.kernel.vector
         opt.minimize(ll, p0, jac=grad_ll, args=(gp, obs))
 
-        t = np.linspace(0, 149, 23) + min_edge
+        # t = np.linspace(0, 149, 23) + min_edge
+        t = np.linspace(0, 149, 46) + min_edge
         try:
             mu, cov = gp.predict(obs['flux'], t)
         except:
@@ -69,16 +70,45 @@ def gp_des_lc(data):
 
         df = pd.concat((df, temp_df))
 
-    df.to_sql('des_obs_corr_interp', engine, if_exists='append', index=False)
+    df.to_sql('fake_non_ia_interp_46', engine, if_exists='append', index=False)
 
 
-query = "SELECT DISTINCT snid FROM des_obs_corr"
-fake_ia = des.query_localdb(query)['snid'].values
+query = "SELECT DISTINCT snid FROM non_ia_obs"
+snid_list = des.query_localdb(query)['snid'].values
 
-for i, snid in enumerate(fake_ia):
+# query = """
+#     SELECT snid
+#     FROM SNCAND
+#     WHERE spec_type='SLSN-I'
+# """
+# snid_list = des.query_desdm(query)['SNID'].values
+
+# query = """
+#     SELECT snid
+#     FROM SNCAND
+#     WHERE spec_type='SNIa'
+# """
+# snid_list = des.query_desdm(query)['SNID'].values
+
+# query = """
+#     SELECT snid
+#     FROM SNCAND
+#     WHERE spec_type!='SNIa' and spec_type!='none'
+# """
+# snid_list = des.query_desdm(query)['SNID'].values
+
+# query = """
+#     SELECT snid
+#     FROM SNCAND
+#     WHERE snfake_id=0
+# """
+# snid_list = des.query_desdm(query)['SNID'].values
+
+
+for i, snid in enumerate(snid_list):
     print(i, snid)
 
-    query = "SELECT * FROM des_obs_corr WHERE snid={}".format(int(snid))
+    query = "SELECT * FROM non_ia_obs WHERE snid={}".format(int(snid))
     data = des.query_localdb(query)
 
     if data is None:
