@@ -150,6 +150,9 @@ def query_localdb(query):
         return None
 
     data.columns = header
+    if 'name' in header:
+        data.drop('name', axis=1, inplace=True)
+        data.drop('ccd', axis=1, inplace=True)
     data.dropna(inplace=True)
 
     conn.close()
