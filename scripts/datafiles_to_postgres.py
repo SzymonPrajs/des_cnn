@@ -104,8 +104,8 @@ def create_indexs(prefix, cursor):
 
 
 if __name__ == "__main__":
-    table_prefix = 'fake_Ia'
-    path = '/Users/szymon/Dropbox/Projects/DES/data/fakes/'
+    table_prefix = 'real_des'
+    path = '/Users/szymon/Dropbox/Projects/DES/data/snana/'
     files = os.listdir(path)
 
     if '.DS_Store' in files:
