@@ -83,7 +83,7 @@ if __name__ == "__main__":
     conn = db.connect(host='localhost',
                       user='szymon',
                       password='supernova',
-                      database='des')
+                      database='thesis')
     cur = conn.cursor()
 
     create_tables(cur)

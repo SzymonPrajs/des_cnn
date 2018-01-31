@@ -101,7 +101,6 @@ ENV/
 .mypy_cache/
 
 # temporary test files
-test*
 
 # profiling outputs
 *.prof
