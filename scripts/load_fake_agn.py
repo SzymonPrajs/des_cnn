@@ -89,7 +89,7 @@ if __name__ == "__main__":
     create_tables(cur)
     conn.commit()
 
-    engine = create_engine('postgresql://szymon:supernova@localhost:5432/des')
+    engine = create_engine('postgresql://szymon:supernova@localhost:5432/thesis')
 
     template_csv = '/Users/szymon/Dropbox/Projects/DES/data/refListMJD.txt'
     template = pd.read_csv(template_csv)
