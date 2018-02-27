@@ -75,8 +75,6 @@ def create_tables(cursor):
 
 
 if __name__ == "__main__":
-    m = Magnetar(b"/Users/szymon/Projects/pyMagnetar/filters")
-
     conn = db.connect(host='localhost',
                       user='szymon',
                       password='supernova',
@@ -103,7 +101,7 @@ if __name__ == "__main__":
     df_slsn = pd.DataFrame(cur_sqlite.fetchall(),
                            columns=np.array(cur_sqlite.description)[:, 0])
 
-    magnetar = Magnetar(b"/Users/szymon/Dropbox/Projects/pyMagnetar/filters")
+    magnetar = Magnetar(b"/Users/szymon/Projects/pyMagnetar/filters")
 
     prop = []
     obs = []
@@ -114,6 +112,7 @@ if __name__ == "__main__":
         simlib = SIMLIBReader(simlib_path + 'DES_20170316.SIMLIB')
 
         magnetar.setup(slsn['T_M'], slsn['B'], slsn['P'], 0, 0.0)
+        print(slsn['T_M'], slsn['B'], slsn['P'], str.encode("DES_" + "g"))
 
         for _ in range(5):
             snid += 1
@@ -140,9 +139,8 @@ if __name__ == "__main__":
                 obs = simlib.get_obslog(field, ccd, band=flt)
                 mjd = obs['mjd'].astype(int)
 
-                print(np.array(obs['mjd']-t0))
-                flux = m.flux(np.array(obs['mjd']-t0), str.encode("DES_"+flt))
-                print(flux)
+                flux = magnetar.flux((obs['mjd']-t0).values,
+                                     str.encode("DES_"+flt))
 
                 mask = ((template['field'] == field) &
                         (template['filter'] == flt) &
