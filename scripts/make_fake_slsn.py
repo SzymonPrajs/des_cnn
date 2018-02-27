@@ -140,7 +140,7 @@ if __name__ == "__main__":
                 obs = simlib.get_obslog(field, ccd, band=flt)
                 mjd = obs['mjd'].astype(int)
 
-                flux = m.flux((obs['mjd']-t0t0).values, str.encode("DES_"+flt))
+                flux = m.flux((obs['mjd']-t0).values, str.encode("DES_"+flt))
 
                 mask = ((template['field'] == field) &
                         (template['filter'] == flt) &
