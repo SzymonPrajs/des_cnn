@@ -133,7 +133,8 @@ if __name__ == "__main__":
                                'season': [],
                                'status': [],
                                'ccd': [],
-                               'z': []
+                               'z': [],
+                               'param_index': []
                                })
 
             t0 = np.random.randint(56500, 58150)
@@ -183,6 +184,7 @@ if __name__ == "__main__":
                 temp_df['ccd'] = ccd
                 temp_df['snid'] = snid
                 temp_df['z'] = z
+                temp_df['param_index'] = index
                 temp_df['name'] = 'fake_slsn_'+str(snid)
 
                 df = pd.concat((df, temp_df))
