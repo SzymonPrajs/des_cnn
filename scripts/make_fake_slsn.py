@@ -196,11 +196,10 @@ if __name__ == "__main__":
                 sorted_separation.sort()
 
                 if sorted_separation[0] < 30:
-                    pass
-                    # df.to_sql('slsn_5_realisations',
-                    #           engine,
-                    #           if_exists='append',
-                    #           index=False)
+                    df.to_sql('slsn_5_realisations',
+                              engine,
+                              if_exists='append',
+                              index=False)
 
         if index % 100 == 0:
             now = datetime.datetime.now()
