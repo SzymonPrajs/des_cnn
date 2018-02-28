@@ -132,7 +132,8 @@ if __name__ == "__main__":
                                'gain': [],
                                'season': [],
                                'status': [],
-                               'ccd': []
+                               'ccd': [],
+                               'z': []
                                })
 
             t0 = np.random.randint(56500, 58150)
@@ -181,6 +182,7 @@ if __name__ == "__main__":
                 temp_df['status'] = 1
                 temp_df['ccd'] = ccd
                 temp_df['snid'] = snid
+                temp_df['z'] = z
                 temp_df['name'] = 'fake_slsn_'+str(snid)
 
                 df = pd.concat((df, temp_df))
