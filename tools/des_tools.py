@@ -190,5 +190,6 @@ def random_field():
 
 
 def random_redshift(max_z):
-    x = np.random.random() * (1 + max_z)**3 + 1
-    return x**(1.0 / 3.0) - 1
+    x = np.random.random() * (1 + max_z)**3.0 + 1
+    return 0.0
+    # x**(1.0 / 3.0) - 1

@@ -114,9 +114,9 @@ if __name__ == "__main__":
         for _ in range(10):
             snid += 1
             field, ccd = random_field()
-            z = random_redshift(3.0)
+            z = random_redshift(0.0)
 
-            magnetar.setup(slsn['T_M'], slsn['B'], slsn['P'], 0, z)
+            magnetar.setup(slsn['T_M'], slsn['B'], slsn['P'], 0.0, z)
             print(slsn['T_M'], slsn['B'], slsn['P'], z)
 
             df = pd.DataFrame({'snid': [],
@@ -143,31 +143,33 @@ if __name__ == "__main__":
 
                 flux = np.array(magnetar.flux((obs['mjd']-t0).values,
                                               str.encode("DES_"+flt)))
+                print(flux)
+                # mask = ((template['field'] == field) &
+                #         (template['filter'] == flt) &
+                #         (template['season'] == 1))
+                # T1 = template[mask]['mjd'].astype(int).unique()
+                # mask = ((template['field'] == field) &
+                #         (template['filter'] == flt) &
+                #         (template['season'] == 2))
+                # T2 = template[mask]['mjd'].astype(int).unique()
+                #
+                # idx = np.searchsorted(mjd, T1)
+                # T1_median = np.median(flux[idx])
+                # idx = np.searchsorted(mjd, T2)
+                # T2_median = np.median(flux[idx])
+                #
+                # obs = simlib.get_obslog(field, ccd, band=flt)
+                # mask = (obs['mjd'] < 56700) | (obs['mjd'] > 57200)
+                # Y1 = np.searchsorted(mjd, obs.loc[mask, 'mjd'].astype(int))
+                # mask = (obs['mjd'] > 56700) & (obs['mjd'] < 57200)
+                # Y2 = np.searchsorted(mjd, obs[mask]['mjd'].astype(int))
+                # np.put(flux, Y2, flux[Y2] - T1_median)
+                # np.put(flux, Y1, flux[Y1] - T2_median)
 
-                mask = ((template['field'] == field) &
-                        (template['filter'] == flt) &
-                        (template['season'] == 1))
-                T1 = template[mask]['mjd'].astype(int).unique()
-                mask = ((template['field'] == field) &
-                        (template['filter'] == flt) &
-                        (template['season'] == 2))
-                T2 = template[mask]['mjd'].astype(int).unique()
-
-                idx = np.searchsorted(mjd, T1)
-                T1_median = np.median(flux[idx])
-                idx = np.searchsorted(mjd, T2)
-                T2_median = np.median(flux[idx])
-
-                obs = simlib.get_obslog(field, ccd, band=flt)
-                mask = (obs['mjd'] < 56700) | (obs['mjd'] > 57200)
-                Y1 = np.searchsorted(mjd, obs.loc[mask, 'mjd'].astype(int))
-                mask = (obs['mjd'] > 56700) & (obs['mjd'] < 57200)
-                Y2 = np.searchsorted(mjd, obs[mask]['mjd'].astype(int))
-                np.put(flux, Y2, flux[Y2] - T1_median)
-                np.put(flux, Y1, flux[Y1] - T2_median)
-
-                idx = np.searchsorted(mjd, obs['mjd'].astype(int))
-                fluxcal, errcal = lc.simulate(flux[idx], obs)
+                fluxcal, errcal = lc.simulate(flux, obs)
+                #
+                # print(flux)
+                print((fluxcal / errcal).values.max())
 
                 temp_df = pd.DataFrame()
                 temp_df['mjd'] = obs['mjd']
@@ -188,20 +190,22 @@ if __name__ == "__main__":
 
                 df = pd.concat((df, temp_df))
 
-            detected = df[df.flux/df.fluxerr > 5]
+            detected = df[df['flux'] / df['fluxerr'] > 5]
+            print(detected.shape)
             if detected.shape[0] > 1:
-                sorted_mjd = detected.mjd.values
+                sorted_mjd = detected['mjd'].values
                 sorted_mjd.sort()
                 sorted_separation = np.diff(sorted_mjd)
                 sorted_separation.sort()
 
                 if sorted_separation[0] < 30:
-                    df.to_sql('slsn_5_realisations',
-                              engine,
-                              if_exists='append',
-                              index=False)
+                    pass
+                    # df.to_sql('slsn_5_realisations',
+                    #           engine,
+                    #           if_exists='append',
+                    #           index=False)
 
-        if index % 100 == 0:
+        if index % 1000 == 0:
             now = datetime.datetime.now()
             now = now.isoformat().split('T')[1].split('.')[0]
             print(now, '- SNID progress:', str(index)+'/'+str(df_slsn.shape[0]))
