@@ -187,3 +187,8 @@ def random_field():
     field = ['C1', 'C2', 'C3', 'E1', 'E2', 'S1', 'S2', 'X1', 'X2', 'X3']
     ccd_range = chain(range(1, 2), range(3, 31), range(32, 61), range(62, 63))
     return field[np.random.randint(10)], np.random.choice(list(ccd_range))
+
+
+def random_redshift(max_z):
+    x = np.random.random() * (1 + max_z)**3 + 1
+    return x**(1.0 / 3.0) - 1

@@ -13,7 +13,7 @@ from lcsim.lcsim import LCSim
 from pyMagnetar import Magnetar
 from lcsim.simlib import SIMLIBReader
 from sqlalchemy import create_engine
-from tools.des_tools import random_field, mjd_to_season
+from tools.des_tools import random_field, random_redshift, mjd_to_season
 
 
 def create_tables(cursor):
@@ -111,12 +111,14 @@ if __name__ == "__main__":
         simlib_path = '/Users/szymon/Dropbox/Projects/SigNS/'
         simlib = SIMLIBReader(simlib_path + 'DES_20170316.SIMLIB')
 
-        magnetar.setup(slsn['T_M'], slsn['B'], slsn['P'], 0, 0.0)
-        print(slsn['T_M'], slsn['B'], slsn['P'], str.encode("DES_" + "g"))
-
-        for _ in range(5):
+        for _ in range(10):
             snid += 1
             field, ccd = random_field()
+            z = random_redshift(3.0)
+
+            magnetar.setup(slsn['T_M'], slsn['B'], slsn['P'], 0, z)
+            print(slsn['T_M'], slsn['B'], slsn['P'], z)
+
             df = pd.DataFrame({'snid': [],
                                'name': [],
                                'mjd': [],
@@ -137,10 +139,10 @@ if __name__ == "__main__":
             t0 = np.random.randint(56500, 58150)
             for flt in ['g', 'r', 'i', 'z']:
                 obs = simlib.get_obslog(field, ccd, band=flt)
-                mjd = obs['mjd'].astype(int)
+                mjd = obs['mjd'].values.astype(int)
 
-                flux = magnetar.flux((obs['mjd']-t0).values,
-                                     str.encode("DES_"+flt))
+                flux = np.array(magnetar.flux((obs['mjd']-t0).values,
+                                              str.encode("DES_"+flt)))
 
                 mask = ((template['field'] == field) &
                         (template['filter'] == flt) &
@@ -200,9 +202,9 @@ if __name__ == "__main__":
                     #           if_exists='append',
                     #           index=False)
 
-        if index % 1000 == 0:
+        if index % 100 == 0:
             now = datetime.datetime.now()
             now = now.isoformat().split('T')[1].split('.')[0]
-            print(now, '- SNID progress:', str(index)+'/'+str(df.shape[0]))
+            print(now, '- SNID progress:', str(index)+'/'+str(df_slsn.shape[0]))
 
     conn.close()

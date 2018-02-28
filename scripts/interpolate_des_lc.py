@@ -8,7 +8,7 @@ from george.kernels import Matern32Kernel
 
 
 edges = pd.read_csv('/Users/szymon/Dropbox/Projects/DES/data/season_edge.csv')
-engine = create_engine('postgresql://szymon:supernova@localhost:5432/des')
+engine = create_engine('postgresql://szymon:supernova@localhost:5432/thesis')
 
 
 def ll(p, gp, df):
@@ -70,10 +70,10 @@ def gp_des_lc(data):
 
         df = pd.concat((df, temp_df))
 
-    df.to_sql('fake_non_ia_interp_46', engine, if_exists='append', index=False)
+    df.to_sql('fake_agn_interp_46', engine, if_exists='append', index=False)
 
 
-query = "SELECT DISTINCT snid FROM non_ia_obs"
+query = "SELECT DISTINCT snid FROM agn_10_realisations"
 snid_list = des.query_localdb(query)['snid'].values
 
 # query = """
@@ -108,7 +108,7 @@ snid_list = des.query_localdb(query)['snid'].values
 for i, snid in enumerate(snid_list):
     print(i, snid)
 
-    query = "SELECT * FROM non_ia_obs WHERE snid={}".format(int(snid))
+    query = "SELECT * FROM agn_10_realisations WHERE snid={}".format(int(snid))
     data = des.query_localdb(query)
 
     if data is None:
