@@ -8,7 +8,7 @@ from george.kernels import Matern32Kernel
 
 
 edges = pd.read_csv('/Users/szymon/Dropbox/Projects/DES/data/season_edge.csv')
-engine = create_engine('postgresql://szymon:supernova@localhost:5432/des')
+engine = create_engine('postgresql://szymon:supernova@localhost:5432/thesis')
 
 
 def ll(p, gp, df):
