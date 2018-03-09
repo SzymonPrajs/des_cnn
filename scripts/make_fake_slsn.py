@@ -1,13 +1,13 @@
 """
-Make fake SLSN light curves and ingest into a PSQL database after
-applying observing logs and correcting for template offsets
+Make fake SLSN light curves.
+
+Ingest fake SLSN light curves into a PSQL database after applying observing
+logs and correcting for template offsets.
 """
-import os
 import sqlite3
 import datetime
 import numpy as np
 import pandas as pd
-import scipy.io as io
 import psycopg2 as db
 from lcsim.lcsim import LCSim
 from pyMagnetar import Magnetar

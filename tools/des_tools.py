@@ -1,6 +1,4 @@
-"""
-Miscellenious helper functions specifically for the use with DES
-"""
+"""Miscellenious helper functions specifically for the use with DES."""
 import numpy as np
 import pandas as pd
 import psycopg2 as db
@@ -12,7 +10,7 @@ from itertools import chain
 @jit
 def mjd_to_season(mjd):
     """
-    Find a corresponding DES observing season for a given MJD
+    Find a corresponding DES observing season for a given MJD.
 
     Parameters
     ----------
@@ -46,7 +44,7 @@ def mjd_to_season(mjd):
 @jit
 def parse_status_code(status_code):
     """
-    Parse DES image quality status code into an array of individual flags
+    Parse DES image quality status code into an array of individual flags.
 
     Parameters
     ----------
@@ -139,7 +137,7 @@ def query_localdb(query):
     conn = db.connect(host='localhost',
                       user='szymon',
                       password='supernova',
-                      database='des')
+                      database='thesis')
     cur = conn.cursor()
 
     cur.execute(query)
