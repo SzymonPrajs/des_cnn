@@ -134,6 +134,7 @@ if __name__ == "__main__":
                                'status': [],
                                'ccd': [],
                                'z': [],
+                               't0': [],
                                'param_index': []
                                })
 
@@ -184,6 +185,7 @@ if __name__ == "__main__":
                 temp_df['ccd'] = ccd
                 temp_df['snid'] = snid
                 temp_df['z'] = z
+                temp_df['t0'] = t0
                 temp_df['param_index'] = index
                 temp_df['name'] = 'fake_slsn_'+str(snid)
 
@@ -197,7 +199,7 @@ if __name__ == "__main__":
                 sorted_separation.sort()
 
                 if sorted_separation[0] < 30:
-                    df.to_sql('slsn_5_realisations',
+                    df.to_sql('slsn_5_realisations_2',
                               engine,
                               if_exists='append',
                               index=False)
