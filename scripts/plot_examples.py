@@ -27,7 +27,7 @@ plt.savefig('/Users/szymon/Desktop/example_SLSN.png', bbox_inches='tight')
 query = """
 WITH id AS (
     SELECT DISTINCT(snid) FROM agn_10_realisations
-    WHERE flux/fluxerr > 8 AND flux > 5000
+    WHERE flux/fluxerr > 10 AND flux > 5000
     ORDER BY snid ASC LIMIT 1
 )
 SELECT a.* FROM agn_10_realisations a
@@ -44,14 +44,14 @@ plt.savefig('/Users/szymon/Desktop/example_AGN.png', bbox_inches='tight')
 query = """
 WITH id AS (
     SELECT DISTINCT(snid) FROM fake_ia_obs
-    WHERE flux/fluxerr > 8 AND flux > 5000
-    ORDER BY snid ASC LIMIT 1
+    WHERE flux/fluxerr > 10 AND flux > 5000
+    ORDER BY snid DESC LIMIT 1
 )
 SELECT a.* FROM fake_ia_obs a
 JOIN id ON a.snid=id.snid
 """
 df = query_localdb(query)
-print('Fake AGN -  snid:', df['snid'][0])
+print('Fake Ia -  snid:', df['snid'][0])
 
 ax = plot_all_seasons(df)
 plt.savefig('/Users/szymon/Desktop/example_SNIa.png', bbox_inches='tight')
