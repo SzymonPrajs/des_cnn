@@ -44,7 +44,7 @@ plt.savefig('/Users/szymon/Desktop/example_AGN.png', bbox_inches='tight')
 query = """
 WITH id AS (
     SELECT DISTINCT(snid) FROM fake_ia_obs
-    WHERE flux/fluxerr > 10 AND flux > 5000
+    WHERE flux/fluxerr > 10 AND flux > 5000 AND status > 0
     ORDER BY snid DESC LIMIT 1
 )
 SELECT a.* FROM fake_ia_obs a
