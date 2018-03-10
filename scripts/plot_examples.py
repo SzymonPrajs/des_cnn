@@ -27,7 +27,7 @@ plt.savefig('/Users/szymon/Desktop/example_SLSN.png', bbox_inches='tight')
 query = """
 WITH id AS (
     SELECT DISTINCT(snid) FROM agn_10_realisations
-    WHERE flux > 5000
+    WHERE flux/fluxerr > 8 AND flux > 5000
     ORDER BY snid ASC LIMIT 1
 )
 SELECT a.* FROM agn_10_realisations a
@@ -44,7 +44,7 @@ plt.savefig('/Users/szymon/Desktop/example_AGN.png', bbox_inches='tight')
 query = """
 WITH id AS (
     SELECT DISTINCT(snid) FROM fake_ia_obs
-    WHERE flux > 5000
+    WHERE flux/fluxerr > 8 AND flux > 5000
     ORDER BY snid ASC LIMIT 1
 )
 SELECT a.* FROM fake_ia_obs a
