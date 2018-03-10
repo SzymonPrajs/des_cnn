@@ -7,10 +7,12 @@ from tools.plot_des import plot_all_seasons
 
 query = """
 WITH id AS (
-    SELECT DISTINCT(snid) FROM slsn_5_realisations
-    WHERE z<0.5 ORDER BY snid ASC LIMIT 1
+    SELECT DISTINCT(snid) FROM slsn_5_realisations_2
+    WHERE t0 BETWEEN 56900 and 56950 AND
+          z BETWEEN 0.5 AND 1.0
+    ORDER BY snid ASC LIMIT 1
 )
-SELECT a.* FROM slsn_5_realisations a
+SELECT a.* FROM slsn_5_realisations_2 a
 JOIN id ON a.snid=id.snid
 """
 df = query_localdb(query)
