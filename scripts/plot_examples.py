@@ -44,7 +44,8 @@ plt.savefig('/Users/szymon/Desktop/example_AGN.png', bbox_inches='tight')
 query = """
 WITH id AS (
     SELECT snid FROM fake_ia_props
-    WHERE specz < 0.2 AND snid > 248000 LIMIT 1
+    WHERE specz < 0.2 AND snid > 248000
+    ORDER BY snid ASC LIMIT 1
 )
 SELECT a.* FROM fake_ia_obs a
 JOIN id ON a.snid=id.snid
