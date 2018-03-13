@@ -22,7 +22,8 @@ if __name__ == "__main__":
                       password='supernova',
                       database='thesis')
     cur = conn.cursor()
-    engine = create_engine('postgresql://szymon:supernova@localhost:5432/thesis')
+    sql = 'postgresql://szymon:supernova@localhost:5432/thesis'
+    engine = create_engine(sql)
 
     conn_sqlite = sqlite3.connect('/Users/szymon/Dropbox/Projects/DES/SLSN.db',
                                   detect_types=sqlite3.PARSE_DECLTYPES |
@@ -120,6 +121,6 @@ if __name__ == "__main__":
         if index % 100 == 0:
             now = datetime.datetime.now()
             now = now.isoformat().split('T')[1].split('.')[0]
-            print(now, '- SNID progress:', str(index)+'/'+str(df_slsn.shape[0]))
+            print(now, '- Progress:', str(index)+'/'+str(df_slsn.shape[0]))
 
     conn.close()
