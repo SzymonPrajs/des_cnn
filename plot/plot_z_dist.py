@@ -8,7 +8,7 @@ sql = 'postgresql://szymon:supernova@localhost:5432/thesis'
 engine = create_engine(sql)
 
 """   Ib/c   """
-query = "SELECT distinct(snid), z FROM fake_ibc_obs"
+query = "SELECT distinct(snid), z FROM fake_ibc_obs_2"
 df = pd.read_sql_query(query, engine)
 z = np.linspace(0, 0.8, 1000)
 pdf = dest.get_sfr_z_pdf(0.8, 0.01)

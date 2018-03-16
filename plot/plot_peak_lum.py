@@ -12,7 +12,7 @@ engine = create_engine(sql)
 """   Ib/c   """
 query = """
 SELECT snid, MAX(flux) AS peak, MAX(z) AS z
-FROM fake_ibc_obs WHERE flux/fluxerr > 8
+FROM fake_ibc_obs_2 WHERE flux/fluxerr > 8
 GROUP BY snid
 """
 df = pd.read_sql_query(query, engine)

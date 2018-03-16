@@ -59,7 +59,7 @@ from tools.plot_des import plot_all_seasons
 
 """   Ib/c   """
 query = """
-SELECT * FROM fake_ibc_obs
+SELECT * FROM fake_ibc_obs_2
 WHERE snid=10000024
 """
 df = query_localdb(query)
