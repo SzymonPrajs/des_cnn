@@ -13,9 +13,10 @@ df = pd.read_sql_query(query, engine)
 z = np.linspace(0, 0.8, 1000)
 pdf = dest.get_sfr_z_pdf(0.8, 0.01)
 
+plt.cla()
 plt.plot(z, pdf(z))
 plt.hist(df['z'].values, bins=20, normed=1)
-plt.savefig('/Users/szymon/Desktop/SNIbc_z_dist.png', bbox_inches='tight')
+plt.savefig('/Users/szymon/Dropbox/Plots/SNIbc_z_dist.png', bbox_inches='tight')
 
 
 """   SLSN   """
@@ -25,6 +26,7 @@ df = pd.read_sql_query(query, engine)
 z = np.linspace(0, 3, 1000)
 pdf = dest.get_sfr_z_pdf(3.0, 0.01)
 
+plt.cla()
 plt.plot(z, pdf(z))
 plt.hist(df['z'].values, bins=20, normed=True)
-plt.savefig('/Users/szymon/Desktop/SLSN_z_dist.png', bbox_inches='tight')
+plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_z_dist.png', bbox_inches='tight')
