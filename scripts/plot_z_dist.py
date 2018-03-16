@@ -10,7 +10,6 @@ engine = create_engine(sql)
 """   Ib/c   """
 query = "SELECT distinct(snid), z FROM fake_ibc_obs"
 df = pd.read_sql_query(query, engine)
-print(df)
 z = np.linspace(0, 0.8, 1000)
 pdf = dest.get_sfr_z_pdf(0.8, 0.01)
 
