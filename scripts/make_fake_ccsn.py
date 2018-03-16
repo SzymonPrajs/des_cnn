@@ -147,7 +147,7 @@ if __name__ == "__main__":
 
             if sorted_separation.sum() > 0 and sorted_separation[0] < 30:
                 n_sne += 1
-                df.to_sql('fake_ibc_obs',
+                df.to_sql('fake_ibc_obs_2',
                           engine,
                           if_exists='append',
                           index=False)
