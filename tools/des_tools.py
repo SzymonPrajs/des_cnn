@@ -6,6 +6,11 @@ from numba import jit
 import easyaccess as ea
 from itertools import chain
 
+from astropy.cosmology import Planck15 as cosmo
+from scipy.interpolate import InterpolatedUnivariateSpline
+
+import lsst_tools as lsstt
+
 
 @jit
 def mjd_to_season(mjd):
@@ -190,3 +195,39 @@ def random_field():
 def random_redshift(max_z):
     x = np.random.random() * (1 + max_z)**3.0 + 1
     return x**(1.0 / 3.0) - 1
+
+
+def random_explosion_mjd(offset):
+    min_mjd = np.array([56534, 56877, 57248, 57614]) - offset
+    max_mjd = np.array([56698, 57067, 57408, 57791])
+
+    s = np.random.randint(4)
+    return min_mjd[s] + (np.random.random() * (max_mjd[s] - min_mjd[s]))
+
+
+def get_sfr_z_pdf(z_max, binsize):
+    z = np.arange(0.0, z_max, binsize)
+    z_dz = np.arange(0.0 + binsize, z_max + binsize, binsize)
+
+    v_z = cosmo.comoving_volume(z)
+    v_z_dz = cosmo.comoving_volume(z_dz)
+
+    v_dz = v_z_dz - v_z
+    norm_v_dz = v_dz / np.nanmax(v_dz)
+
+    sfr_z = lsstt.sims.calculate_SFR(z)
+    sfr_norm = sfr_z / np.nanmax(sfr_z)
+
+    volumetric_rate = norm_v_dz * sfr_norm
+    normed_volumetric_rate = volumetric_rate / np.nanmax(volumetric_rate)
+
+    return InterpolatedUnivariateSpline(z, normed_volumetric_rate)
+
+
+def random_redshift_sfr(pdf, z_max):
+    while True:
+        x = np.random.random() * z_max
+        y = np.random.random()
+
+        if y <= pdf(x):
+            return x
