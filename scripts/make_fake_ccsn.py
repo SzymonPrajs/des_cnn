@@ -60,7 +60,7 @@ if __name__ == "__main__":
         mag_offset = lsstt.sims.choose_magoffset(n=1)[0]
         p0 = dest.random_explosion_mjd(30)
         MW_EBV = 0.0
-        host_EBV = lsstt.sims.choose_extinction_host(n=1)
+        host_EBV = lsstt.sims.choose_extinction_host(n=1)[0]
 
         subtype = lsstt.sims.choose_subtype()
         idx = np.where(info.table["Type"] == subtype)[0]
