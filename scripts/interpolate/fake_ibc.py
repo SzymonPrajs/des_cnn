@@ -70,45 +70,16 @@ def gp_des_lc(data):
 
         df = pd.concat((df, temp_df))
 
-    df.to_sql('fake_agn_interp_46', engine, if_exists='append', index=False)
+    df.to_sql('fake_ibc_interp_46', engine, if_exists='append', index=False)
 
 
-query = "SELECT DISTINCT snid FROM agn_10_realisations"
+query = "SELECT DISTINCT snid FROM fake_ibc_obs_2"
 snid_list = des.query_localdb(query)['snid'].values
-
-# query = """
-#     SELECT snid
-#     FROM SNCAND
-#     WHERE spec_type='SLSN-I'
-# """
-# snid_list = des.query_desdm(query)['SNID'].values
-
-# query = """
-#     SELECT snid
-#     FROM SNCAND
-#     WHERE spec_type='SNIa'
-# """
-# snid_list = des.query_desdm(query)['SNID'].values
-
-# query = """
-#     SELECT snid
-#     FROM SNCAND
-#     WHERE spec_type!='SNIa' and spec_type!='none'
-# """
-# snid_list = des.query_desdm(query)['SNID'].values
-
-# query = """
-#     SELECT snid
-#     FROM SNCAND
-#     WHERE snfake_id=0
-# """
-# snid_list = des.query_desdm(query)['SNID'].values
-
 
 for i, snid in enumerate(snid_list):
     print(i, snid)
 
-    query = "SELECT * FROM agn_10_realisations WHERE snid={}".format(int(snid))
+    query = "SELECT * FROM fake_ibc_obs_2 WHERE snid={}".format(int(snid))
     data = des.query_localdb(query)
 
     if data is None:

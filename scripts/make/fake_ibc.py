@@ -1,5 +1,5 @@
 """
-Make fake CCSN light curves.
+Make fake SNIb/c light curves.
 
 Ingest fake CCSN light curves into a PSQL database after applying observing
 logs and correcting for template offsets.
