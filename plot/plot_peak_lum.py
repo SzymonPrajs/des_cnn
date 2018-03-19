@@ -18,7 +18,10 @@ GROUP BY snid
 df = pd.read_sql_query(query, engine)
 
 plt.cla()
-plt.scatter(df['z'], -2.5*np.log10(df['peak']) + 31.4 - c.distmod(df['z'].values).value)
+mag = -2.5*np.log10(df['peak']) + 31.4 - c.distmod(df['z'].values).value
+plt.hist2d(df['z'], mag, bins=[50, 30], cmap='viridis')
+plt.xlabel('Redshift')
+plt.ylabel('Absolute Mag')
 plt.savefig('/Users/szymon/Dropbox/Plots/SNIbc_peak_lum.png', bbox_inches='tight')
 
 
@@ -31,5 +34,8 @@ GROUP BY snid
 df = pd.read_sql_query(query, engine)
 
 plt.cla()
-plt.scatter(df['z'], -2.5*np.log10(df['peak']) + 31.4 - c.distmod(df['z'].values).value)
+mag = -2.5*np.log10(df['peak']) + 31.4 - c.distmod(df['z'].values).value
+plt.hist2d(df['z'], mag, bins=[50, 30], cmap='viridis')
+plt.xlabel('Redshift')
+plt.ylabel('Absolute Mag')
 plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_peak_lum.png', bbox_inches='tight')
