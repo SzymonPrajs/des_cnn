@@ -77,7 +77,7 @@ def gp_des_lc(data):
 query = """
     SELECT snid
     FROM SNCAND
-    WHERE spec_type!='SNIa' AND spec_type!='none' AND NOT LIKE 'DES17%'
+    WHERE spec_type!='SNIa' AND spec_type!='none' AND transient_name NOT LIKE 'DES17%'
 """
 snid_list = des.query_desdm(query)['SNID'].values
 
