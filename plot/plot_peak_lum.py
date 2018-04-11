@@ -9,6 +9,22 @@ sql = 'postgresql://szymon:supernova@localhost:5432/thesis'
 engine = create_engine(sql)
 
 
+"""   II   """
+query = """
+SELECT snid, MAX(flux) AS peak, MAX(z) AS z
+FROM fake_ii_obs WHERE flux/fluxerr > 8
+GROUP BY snid
+"""
+df = pd.read_sql_query(query, engine)
+
+plt.cla()
+mag = -2.5*np.log10(df['peak']) + 31.4 - c.distmod(df['z'].values).value
+plt.hist2d(df['z'], mag, bins=[50, 30], cmap='viridis')
+plt.xlabel('Redshift')
+plt.ylabel('Absolute Mag')
+plt.savefig('/Users/szymon/Dropbox/Plots/SNII_peak_lum.png', bbox_inches='tight')
+
+
 """   Ib/c   """
 query = """
 SELECT snid, MAX(flux) AS peak, MAX(z) AS z
@@ -23,7 +39,6 @@ plt.hist2d(df['z'], mag, bins=[50, 30], cmap='viridis')
 plt.xlabel('Redshift')
 plt.ylabel('Absolute Mag')
 plt.savefig('/Users/szymon/Dropbox/Plots/SNIbc_peak_lum.png', bbox_inches='tight')
-
 
 """   SLSN   """
 query = """

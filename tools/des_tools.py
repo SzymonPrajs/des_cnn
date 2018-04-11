@@ -231,3 +231,43 @@ def random_redshift_sfr(pdf, z_max):
 
         if y <= pdf(x):
             return x
+
+
+def choose_subtype_II(return_string=True):
+    """
+    1|SNIIn | 3|0.3|
+    2|SNIIP | 7|0.7|
+    total - 10
+    """
+    n = np.random.random()
+
+    if n <= 0.3:
+        if return_string:
+            return "SNIIn"
+        else:
+            return 1
+
+    else:
+        if return_string:
+            return "SNIIP"
+        else:
+            return 2
+
+
+def max_z_SNII(snname):
+    max_z = {"SN2011hs": 0.26,
+             "SN2007pk": 0.75,
+             "SN2009E": 0.30,
+             "SN2013ej": 0.36,
+             "SN2002gd": 0.26,
+             "SN2000cb": 0.36,
+             "SN1999el": 0.4,
+             "SN2010al": 0.9,
+             "SN2006V": 0.45,
+             "SN2012ec": 0.36,
+             "SN2000eo": 0.78}
+
+    if snname in max_z:
+        return max_z[snname]
+    else:
+        return 0.9
