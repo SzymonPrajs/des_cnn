@@ -9,14 +9,14 @@ engine = create_engine(sql)
 
 
 """   Ia   """
-query = "SELECT distinct(snid), z FROM fake_ia_obs"
+query = "SELECT snid, photz FROM fake_ia_props"
 df = pd.read_sql_query(query, engine)
 # z = np.linspace(0, 1.4, 1000)
 # pdf = dest.get_sfr_z_pdf(0.8, 0.01)
 
 plt.cla()
 # plt.plot(z, pdf(z), label='Input distribution')
-plt.hist(df['z'].values, bins=20, normed=1, label='Observed distribution')
+plt.hist(df['photz'].values, bins=20, normed=1, label='Observed distribution')
 plt.xlabel('Redshift')
 
 plt.legend()
