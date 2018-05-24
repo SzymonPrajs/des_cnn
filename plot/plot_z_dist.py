@@ -3,6 +3,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 import matplotlib.pyplot as plt
 import tools.des_tools as dest
+plt.rcParams['figure.figsize'] = 10, 6
 
 sql = 'postgresql://szymon:supernova@localhost:5432/thesis'
 engine = create_engine(sql)
@@ -15,11 +16,11 @@ df = pd.read_sql_query(query, engine)
 # pdf = dest.get_sfr_z_pdf(0.8, 0.01)
 
 plt.cla()
-plt.hist(df['specz'].values, bins=20, normed=1, label='Observed distribution')
-plt.plot([2.0,2.0], [0.5,0.5], label=None)
-plt.xlabel('Redshift')
+plt.hist(df['specz'].values, bins=20, normed=1, label='Observed distribution', fontsize=14)
+plt.plot([2.0,2.0], [0.5,0.5], label=None, fontsize=14)
+plt.xlabel('Redshift', fontsize=14)
 
-plt.legend()
+plt.legend(fontsize=12)
 plt.xlim(0, 1.5)
 plt.savefig('/Users/szymon/Dropbox/Plots/SNIa_z_dist.png', bbox_inches='tight')
 
@@ -31,11 +32,11 @@ z = np.linspace(0, 0.8, 1000)
 pdf = dest.get_sfr_z_pdf(0.8, 0.01)
 
 plt.cla()
-plt.hist(df['z'].values, bins=20, normed=1, label='Observed distribution')
-plt.plot(z, pdf(z), label='Input distribution')
-plt.xlabel('Redshift')
+plt.hist(df['z'].values, bins=20, normed=1, label='Observed distribution', fontsize=14)
+plt.plot(z, pdf(z), label='Input distribution', fontsize=14)
+plt.xlabel('Redshift', fontsize=14)
 
-plt.legend()
+plt.legend(fontsize=12)
 plt.savefig('/Users/szymon/Dropbox/Plots/SNII_z_dist.png', bbox_inches='tight')
 
 
@@ -46,11 +47,11 @@ z = np.linspace(0, 0.8, 1000)
 pdf = dest.get_sfr_z_pdf(0.8, 0.01)
 
 plt.cla()
-plt.hist(df['z'].values, bins=20, normed=1, label='Observed distribution')
-plt.plot(z, pdf(z), label='Input distribution')
-plt.xlabel('Redshift')
+plt.hist(df['z'].values, bins=20, normed=1, label='Observed distribution', fontsize=14)
+plt.plot(z, pdf(z), label='Input distribution', fontsize=14)
+plt.xlabel('Redshift', fontsize=14)
 
-plt.legend()
+plt.legend(fontsize=12)
 plt.savefig('/Users/szymon/Dropbox/Plots/SNIbc_z_dist.png', bbox_inches='tight')
 
 
@@ -62,9 +63,9 @@ z = np.linspace(0, 3, 1000)
 pdf = dest.get_sfr_z_pdf(3.0, 0.01)
 
 plt.cla()
-plt.hist(df['z'].values, bins=20, normed=True, label='Observed distribution')
-plt.plot(z, pdf(z), label='Input distribution')
-plt.xlabel('Redshift')
+plt.hist(df['z'].values, bins=20, normed=True, label='Observed distribution', fontsize=14)
+plt.plot(z, pdf(z), label='Input distribution', fontsize=14)
+plt.xlabel('Redshift', fontsize=14)
 
-plt.legend()
+plt.legend(fontsize=12)
 plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_z_dist.png', bbox_inches='tight')
