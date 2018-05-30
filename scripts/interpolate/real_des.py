@@ -74,15 +74,15 @@ def gp_des_lc(data):
 
 
 query = "SELECT DISTINCT snid FROM real_des_obs_corr"
-fake_ia = des.query_localdb(query)['snid'].values
+real_des = des.query_localdb(query)['snid'].values
 
-for i, snid in enumerate(fake_ia):
+query = "SELECT distinct(snid) FROM real_des_interp_46"
+skip_id = des.query_localdb(query)['snid'].values
+
+for i, snid in enumerate(real_des):
     print(i, snid)
 
-    query = "SELECT * FROM real_des_interp_46 WHERE snid={}".format(int(snid))
-    data = des.query_localdb(query)
-
-    if data is not None:
+    if snid in skip_id:
         print('Already in the database')
         continue
 
