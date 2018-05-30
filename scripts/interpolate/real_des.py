@@ -79,6 +79,13 @@ fake_ia = des.query_localdb(query)['snid'].values
 for i, snid in enumerate(fake_ia):
     print(i, snid)
 
+    query = "SELECT * FROM real_des_interp_46 WHERE snid={}".format(int(snid))
+    data = des.query_localdb(query)
+
+    if data is not None:
+        print('Already in the database')
+        continue
+
     query = "SELECT * FROM real_des_obs_corr WHERE snid={}".format(int(snid))
     data = des.query_localdb(query)
 
