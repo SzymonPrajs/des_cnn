@@ -29,11 +29,18 @@ if __name__ == "__main__":
     sql = 'postgresql://szymon:supernova@localhost:5432/thesis'
     engine = create_engine(sql)
 
+    lc = LCSim()
     simlib_path = '/Users/szymon/Dropbox/Projects/SigNS/'
     simlib = SIMLIBReader(simlib_path + 'DES_20170316.SIMLIB')
 
+    filter_names = ["DES_g", "DES_r", "DES_i", "DES_z"]
+    zp_dict = {}
+    for flt in filter_names:
+        zp_dict[flt] = pcc.kcorr.calc_AB_zp(flt)
+
     n_sne = 0
     snid = 0
+    printable = True
     while n_sne < n_sne_req:
         snid += 1
         field, ccd = dest.random_field()
@@ -52,20 +59,30 @@ if __name__ == "__main__":
                            'gain': [],
                            'season': [],
                            'status': [],
-                           'ccd': [],
-                           'z': []
+                           'ccd': []
                            })
+
+        obs = simlib.get_obslog(field, ccd)
+        mjd_sim = np.random.choice(obs['mjd'].values)
+        mag = 3*np.random.random() + 18
 
         for flt in ['g', 'r', 'i', 'z']:
             obs = simlib.get_obslog(field, ccd, band=flt)
-            obs["flt_b"] = obs["flt"].map(lambda x: str.encode("DES_" + x))
+            idx = np.argmin(np.abs(obs['mjd'].values - mjd_sim))
 
-            flux *= 10.0**(0.4 * (zp_dict['DES_' + flt] + 31.4))
+            flux = obs['mjd'].values * 0
+            if np.abs(obs['mjd'].values[idx] - mjd_sim) < 3:
+                flux[idx] += 10**((31.4 - mag) / 2.5)
+
+            if np.random.random() <= 0.25:
+                diff = obs['mjd'].values - mjd_sim
+                idx_2 = np.where((diff > 0) & (diff < 30))
+                if idx_2[0].size > 0:
+                    mjd_2_sim = np.random.choice(obs['mjd'].values[idx_2])
+                    idx_3 = np.argmin(np.abs(obs['mjd'].values - mjd_2_sim))
+                    flux[idx_3] += 10**((31.4 - mag) / 2.5)
+
             fluxcal, errcal = lc.simulate(flux, obs)
-
-            flux_max = flux.argmax()
-            if (flux.max() > 1e6):
-                runaway = True
 
             temp_df = pd.DataFrame()
             temp_df['mjd'] = obs['mjd']
@@ -82,13 +99,7 @@ if __name__ == "__main__":
             temp_df['status'] = 1
             temp_df['ccd'] = ccd
             temp_df['snid'] = snid
-            temp_df['z'] = z_sim
-            temp_df['p0'] = p0
-            temp_df['name'] = 'fake_ccsn_' + str(snid)
-            temp_df['mag_offset'] = mag_offset
-            temp_df['subtype'] = subtype
-            temp_df['template'] = snname
-            temp_df['host_EBV'] = host_EBV
+            temp_df['name'] = 'fake_noise_' + str(snid)
 
             df = pd.concat((df, temp_df))
 
@@ -104,7 +115,7 @@ if __name__ == "__main__":
 
             if sorted_separation.sum() > 0 and sorted_separation[0] < 30:
                 n_sne += 1
-                df.to_sql('fake_ibc_obs_2',
+                df.to_sql('fake_noise',
                           engine,
                           if_exists='append',
                           index=False)
