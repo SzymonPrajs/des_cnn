@@ -5,7 +5,7 @@ import tools.des_tools as des
 import scipy.optimize as opt
 from sqlalchemy import create_engine
 from george.kernels import Matern32Kernel
-# from mpi4py import MPI
+from mpi4py import MPI
 
 
 edges = pd.read_csv('/Users/szymon/Dropbox/Projects/DES/data/season_edge.csv')
@@ -77,15 +77,15 @@ def gp_des_lc(data):
 query = "SELECT DISTINCT snid FROM fake_noise"
 snid_list = des.query_localdb(query)['snid'].values
 
-# rank = MPI.COMM_WORLD.Get_rank()
-# size = MPI.COMM_WORLD.Get_size()
+rank = MPI.COMM_WORLD.Get_rank()
+size = MPI.COMM_WORLD.Get_size()
 
 for i, snid in enumerate(snid_list):
-    # if i % size != rank:
-    #     continue
-    # print(rank,' - ', i, ' - ', snid)
+    if i % size != rank:
+        continue
+    print(rank,' - ', i, ' - ', snid)
 
-    print(i, ' - ', snid)
+    #print(i, ' - ', snid)
 
     query = "SELECT * FROM fake_noise WHERE snid={}".format(int(snid))
     data = des.query_localdb(query)

@@ -21,7 +21,7 @@ import tools.des_tools as dest
 binsize = 0.01
 z_max = 0.9
 n_sne_req = 14500
-run = 1
+run = 7
 if __name__ == "__main__":
     conn = db.connect(host='localhost',
                       user='szymon',
