@@ -78,7 +78,7 @@ def gp_des_lc(data):
     df.to_sql('fake_noise_interp_46', engine, if_exists='append', index=False)
 
 
-query = "SELECT DISTINCT snid FROM fake_noise"
+query = "SELECT DISTINCT(snid) FROM fake_noise"
 snid_list = des.query_localdb(query)['snid'].values.sort()
 
 for i, snid in enumerate(snid_list):
