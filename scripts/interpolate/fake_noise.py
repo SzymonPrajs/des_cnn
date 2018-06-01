@@ -12,8 +12,6 @@ rank = MPI.COMM_WORLD.Get_rank()
 size = MPI.COMM_WORLD.Get_size()
 print(rank, size)
 
-sys.exit(0)
-
 edges = pd.read_csv('/Users/szymon/Dropbox/Projects/DES/data/season_edge.csv')
 engine = create_engine('postgresql://szymon:supernova@localhost:5432/thesis')
 
@@ -81,7 +79,7 @@ def gp_des_lc(data):
 
 
 query = "SELECT DISTINCT snid FROM fake_noise"
-snid_list = des.query_localdb(query)['snid'].values
+snid_list = des.query_localdb(query)['snid'].values.sort()
 
 for i, snid in enumerate(snid_list):
     if i % size != rank:
