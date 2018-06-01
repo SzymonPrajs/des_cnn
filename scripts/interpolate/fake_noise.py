@@ -79,7 +79,7 @@ def gp_des_lc(data):
 
 
 query = "SELECT DISTINCT(snid) FROM fake_noise"
-snid_list = des.query_localdb(query)['snid'].values.sort()
+snid_list = np.sort(des.query_localdb(query)['snid'].values)
 
 for i, snid in enumerate(snid_list):
     if i % size != rank:
