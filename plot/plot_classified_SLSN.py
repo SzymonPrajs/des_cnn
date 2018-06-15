@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from tools.des_tools import query_localdb
 from tools.plot_des import plot_all_seasons
 
-SLSN = np.loadtxt('/Users/szymon/Dropbox/SLSN_99.csv', unpack=True)
+SLSN = np.loadtxt('/Users/szymon/Dropbox/SLSN_50.csv', unpack=True)
 engine = create_engine('postgresql://szymon:supernova@localhost:5432/thesis')
 
 for snid in SLSN:
@@ -16,4 +16,4 @@ for snid in SLSN:
     print('snid:', df['snid'][0])
 
     ax = plot_all_seasons(df)
-    plt.savefig(f'/Users/szymon/Dropbox/Plots/SLSN/'+str(snid)+'.png', bbox_inches='tight')
+    plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_50/'+str(snid)+'.png', bbox_inches='tight')
