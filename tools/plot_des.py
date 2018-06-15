@@ -57,7 +57,7 @@ def plot_all_seasons(data):
         detected = obs.query("flux / fluxerr > 5")
         noise = obs.query("flux / fluxerr < 5")
 
-        ax[i].set_ylim(-2 * noise['flux'].median(),
+        ax[i].set_ylim(-2 * noise['fluxerr'].median(),
                        1.1 * detected['flux'].max())
 
     fig.tight_layout()
