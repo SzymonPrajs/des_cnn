@@ -54,13 +54,13 @@ def plot_all_seasons(data):
                        c=band_colour(group[1]),
                        label=label)
 
-        detected = obs.query("flux / fluxerr > 5")
-        noise = obs.query("flux / fluxerr < 5")
-
-        ax[i].set_ylim(-5 * np.median(noise['fluxerr'].values),
-                       1.2 * np.max(obs['flux'].values))
-
     fig.tight_layout()
+
+    detected = data.query("flux / fluxerr > 5")
+    noise = data.query("flux / fluxerr < 5")
+    plt.ylim(-5 * np.median(noise['fluxerr'].values),
+             1.2 * np.max(detected['flux'].values))
+
     plt.legend(fontsize=16, loc='best')
 
     return ax
