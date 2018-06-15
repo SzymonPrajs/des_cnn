@@ -57,7 +57,8 @@ def plot_all_seasons(data):
         detected = obs.query("flux / fluxerr > 5")
         noise = obs.query("flux / fluxerr < 5")
 
-        ax[i].set_ylim(-2 * np.median(noise['fluxerr'].values),100)
+        ax[i].set_ylim(-5 * np.median(noise['fluxerr'].values),
+                       1.2 * np.max(detected['flux']))
 
     fig.tight_layout()
     plt.legend(fontsize=16, loc='best')
