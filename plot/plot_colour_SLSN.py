@@ -8,7 +8,7 @@ from tools.des_tools import query_localdb
 
 fig, ax = plt.subplots(1, 1, figsize=(20, 20))
 
-for folder in ['SLSN_99'] #, 'SLSN_90', 'SLSN_50']:
+for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
     SLSN = np.loadtxt('/Users/szymon/Dropbox/'+folder+'.csv', unpack=True)
     engine = create_engine('postgresql://szymon:supernova@localhost:5432/thesis')
 
