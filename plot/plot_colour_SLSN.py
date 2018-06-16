@@ -15,7 +15,7 @@ for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
     SLSN = np.loadtxt('/Users/szymon/Dropbox/'+folder+'.csv', unpack=True)
     engine = create_engine('postgresql://szymon:supernova@localhost:5432/thesis')
 
-    for snid in SLSN:
+    for snid in slsn_list:
         print(snid)
         query = "SELECT * FROM real_des_interp_46 WHERE snid="+str(snid)
         df = query_localdb(query)
