@@ -27,7 +27,7 @@ for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
         z_mag = z['mag'].values
         g_mask = g_mag < 27
         z_mask = z_mag < 27
-        mask = g_mask | z_mask
+        mask = g_mask & z_mask
 
         ax.plot(g_mag[mask] - z_mag[mask],
                 g_mag[mask], c='black')
