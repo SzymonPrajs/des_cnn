@@ -25,11 +25,11 @@ for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
         z = gdf.get_group('z')
         g_mag = g['mag'].values
         z_mag = z['mag'].values
-        g_mask = g_mag < 26
-        z_mask = z_mag < 26
-        mask = g_mask * z_mask
+        g_mask = g_mag < 27
+        z_mask = z_mag < 27
+        mask = g_mask | z_mask
 
-        ax.plot(g_mag[mask] / z_mag[mask],
+        ax.plot(g_mag[mask] - z_mag[mask],
                 g_mag[mask], c='black')
 
 plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours.pdf', bbox_inches='tight')
