@@ -44,7 +44,7 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
 
 
 
-        if sum((g_mag[mask] - r_mag[mask]) > line(g_mag[mask])) > 5:
+        if sum((g_mag[mask] - r_mag[mask]) > line(g_mag[mask])) > 0:
             print(snid)
 
 y = np.linspace(20, 25, 100)
