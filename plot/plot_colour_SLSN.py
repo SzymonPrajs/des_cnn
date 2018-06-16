@@ -22,8 +22,9 @@ for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
         gdf = df.groupby('band')
         g = gdf.get_group('g')
         z = gdf.get_group('z')
-
-        ax.plot(g['flux'].values / z['flux'].values,
-                g['flux'].values, c='black')
+        g_mag = np.log10(g['flux'].values)
+        g_z_mag = np.log10(g['flux'].values / z['flux'].values)
+        ax.plot(g_z_mag,
+                g_mag, c='black')
 
 plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours.pdf', bbox_inches='tight')
