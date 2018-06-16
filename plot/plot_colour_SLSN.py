@@ -23,6 +23,7 @@ for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
         g = gdf.get_group('g')
         z = gdf.get_group('z')
 
-        ax.plot(g['flux']/z['flux'], g['flux'], c='b')
+        ax.plot(g['flux'].values / z['flux'].values,
+                g['flux'].values, c='black')
 
 plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours.pdf', bbox_inches='tight')
