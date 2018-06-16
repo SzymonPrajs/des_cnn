@@ -12,7 +12,7 @@ slsn_list = [1279517., 1279780., 1281880., 1290780., 1298914.,
              1385229., 1562075.]
 
 def line(y):
-    return (y - 21.5) / 2
+    return (y - 21.5) / 1.75
 
 for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
     SLSN = np.loadtxt('/Users/szymon/Dropbox/'+folder+'.csv', unpack=True)
