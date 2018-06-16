@@ -5,7 +5,7 @@ import tools.des_tools as des
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
 from tools.des_tools import query_localdb
-from tools.plot_des import plot_all_seasons
+from tools.plot_des import plot_all_seasons, plot_gp_all_seasons, plot_gp_only_all_seasons
 
 
 for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
