@@ -22,14 +22,14 @@ for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
         df = df[df['season'] == season]
         gdf = df.groupby('band')
         g = gdf.get_group('g')
-        z = gdf.get_group('z')
+        r = gdf.get_group('r')
         g_mag = g['mag'].values
-        z_mag = z['mag'].values
+        r_mag = r['mag'].values
         g_mask = g_mag < 27
-        z_mask = z_mag < 27
-        mask = g_mask & z_mask
+        r_mask = r_mag < 27
+        mask = g_mask & r_mask
 
-        ax.plot(g_mag[mask] - z_mag[mask],
+        ax.plot(g_mag[mask] - r_mag[mask],
                 g_mag[mask], c='black')
 
 plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours.pdf', bbox_inches='tight')
