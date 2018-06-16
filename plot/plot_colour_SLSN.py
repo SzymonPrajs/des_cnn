@@ -12,7 +12,7 @@ slsn_list = [1279517., 1279780., 1281880., 1290780., 1298914.,
              1385229., 1562075.]
 
 def line(y):
-    return (y - 22.0) / 2
+    return (y - 21.5) / 2
 
 for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
     SLSN = np.loadtxt('/Users/szymon/Dropbox/'+folder+'.csv', unpack=True)
@@ -36,14 +36,18 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
 
         col = ''
         if snid in slsn_list:
-            col = 'blue'
+            ax.plot(g_mag[mask] - r_mag[mask],
+                g_mag[mask], c='red', lw=2)
         else:
-            col='black'
+            ax.plot(g_mag[mask] - r_mag[mask],
+                    g_mag[mask], c='black', alpha=0.4)
 
-        ax.plot(g_mag[mask] - r_mag[mask],
-                g_mag[mask], c=col)
 
-        if sum((g_mag[mask] - r_mag[mask]) > line(g_mag[mask])) > 10:
+
+        if sum((g_mag[mask] - r_mag[mask]) > line(g_mag[mask])) > 5:
             print(snid)
 
+y = np.linspace(20, 25, 100)
+x = line(y)
+plt.plot(x, y, c='blue', lw=2)
 plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours_2.pdf', bbox_inches='tight')
