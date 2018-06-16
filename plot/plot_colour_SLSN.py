@@ -28,8 +28,8 @@ for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
         r = gdf.get_group('r')
         g_mag = g['mag'].values
         r_mag = r['mag'].values
-        g_mask = g_mag < 27
-        r_mask = r_mag < 27
+        g_mask = g_mag < 25
+        r_mask = r_mag < 25
         mask = g_mask & r_mask
 
         col = ''
