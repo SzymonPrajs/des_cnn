@@ -7,6 +7,9 @@ from sqlalchemy import create_engine
 from tools.des_tools import query_localdb
 
 fig, ax = plt.subplots(1, 1, figsize=(20, 20))
+slsn_list = [1279517., 1279780., 1281880., 1290780., 1298914.,
+             1320152., 1336197., 1340054., 1370309., 1372087.,
+             1385229., 1562075.]
 
 for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
     SLSN = np.loadtxt('/Users/szymon/Dropbox/'+folder+'.csv', unpack=True)
@@ -29,7 +32,13 @@ for folder in ['SLSN_99']: #, 'SLSN_90', 'SLSN_50']:
         r_mask = r_mag < 27
         mask = g_mask & r_mask
 
+        col = ''
+        if snid in slsn_list:
+            col = 'blue'
+        else:
+            col='black'
+
         ax.plot(g_mag[mask] - r_mag[mask],
-                g_mag[mask], c='black')
+                g_mag[mask], c=col)
 
 plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours.pdf', bbox_inches='tight')
