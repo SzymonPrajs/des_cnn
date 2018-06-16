@@ -43,7 +43,7 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         ax.plot(g_mag[mask] - r_mag[mask],
                 g_mag[mask], c=col)
 
-        if sum((g_mag[mask] - r_mag[mask]) > line(g_mag[mask])) > 0:
+        if sum((g_mag[mask] - r_mag[mask]) > line(g_mag[mask])) > 10:
             print(snid)
 
-plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours.pdf', bbox_inches='tight')
+plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours_2.pdf', bbox_inches='tight')
