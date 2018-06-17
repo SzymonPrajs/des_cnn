@@ -52,23 +52,22 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
 
         mask = g_mask & r_mask & i_mask & z_mask
 
-        col = ''
-        if snid in slsn_list:
-            ax.plot(r_mag[mask] - i_mag[mask],
-                    z_mag[mask],
-                    c='red', lw=3)
+        if not sum((r_mag[mask] - i_mag[mask]) > 2) > 0:
+            # print(snid)
+            col = ''
+            if snid in slsn_list:
+                ax.plot(r_mag[mask] - i_mag[mask],
+                        z_mag[mask],
+                        c='red', lw=3)
 
-        elif snid in snii_list:
-            ax.plot(r_mag[mask] - i_mag[mask],
-                    z_mag[mask],
-                    c='green', lw=3)
-        else:
-            ax.plot(g_mag[mask] - i_mag[mask],
-                    z_mag[mask],
-                    c='black', alpha=0.2)
-
-        # if sum((g_mag[mask] - z_mag[mask]) > line(g_mag[mask])) > 0:
-        #     print(snid)
+            elif snid in snii_list:
+                ax.plot(r_mag[mask] - i_mag[mask],
+                        z_mag[mask],
+                        c='green', lw=3)
+            else:
+                ax.plot(g_mag[mask] - i_mag[mask],
+                        z_mag[mask],
+                        c='black', alpha=0.2)
 
 # y = np.linspace(20, 25, 100)
 # x = line(y)
