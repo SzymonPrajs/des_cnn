@@ -65,7 +65,7 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
                         z_mag[mask],
                         c='green', lw=3)
             else:
-                ax.plot(g_mag[mask] - i_mag[mask],
+                ax.plot(r_mag[mask] - i_mag[mask],
                         z_mag[mask],
                         c='black', alpha=0.2)
 
