@@ -19,10 +19,10 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
     engine = create_engine('postgresql://szymon:supernova@localhost:5432/thesis')
 
     for snid in SLSN:
-        query = "SELECT * FROM real_des_interp_46 WHERE snid="+str(snid)
-        df = query_localdb(query)
-        df['mag'] = 31.4 - 2.5 * np.log10(df['flux'])
-        df.to_csv('/Users/szymon/Dropbox/Plots/Data/'+str(int(snid))+'.csv', index=False)
+        # query = "SELECT * FROM real_des_interp_46 WHERE snid="+str(snid)
+        # df = query_localdb(query)
+        # df['mag'] = 31.4 - 2.5 * np.log10(df['flux'])
+        df.from_csv('/Users/szymon/Dropbox/Plots/Data/'+str(int(snid))+'.csv', index=False)
 
         season = df['season'][df['mag'] == df['mag'].min()].values[0]
         df = df[df['season'] == season]
