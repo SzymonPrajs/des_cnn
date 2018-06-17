@@ -31,8 +31,8 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         #           'SPECZ_CATALOG']])
 
         if df_all.shape[0] > 0:
-            df_all = pd.concat([df_all, pd.DataFrame(df)], ignore_index=True)
+            df_all = pd.concat([df_all, df], ignore_index=True, axis=1)
         else:
-            df_all = pd.DataFrame(df)
+            df_all = df
 
 df_all.to_csv('/Users/szymon/Dropbox/SLSN_z.csv', index=False)
