@@ -33,6 +33,6 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         if df_all.shape[0] > 0:
             df_all = pd.concat([df_all, df])
         else:
-            df_all = df.to_frame()
+            df_all = df
 
 df_all.to_csv('/Users/szymon/Dropbox/SLSN_z.csv', index=False)
