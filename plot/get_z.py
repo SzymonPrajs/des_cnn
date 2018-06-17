@@ -17,6 +17,9 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
     for snid in SLSN:
         query = "SELECT * FROM sngals WHERE snid="+str(int(snid))
         df = conn.query_to_pandas(query)
+        if not df.shape[0] > 0:
+            continue
+            
         df = df.iloc[0]
 
         print(str(int(snid)))
