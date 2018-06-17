@@ -37,12 +37,12 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         i_mag = i['mag'].values
         z_mag = z['mag'].values
 
-        g_mask = g_mag < 25
-        r_mask = r_mag < 25
-        i_mask = i_mag < 25
-        z_mask = z_mag < 25
+        g_mask = g_mag < 27
+        r_mask = r_mag < 27
+        i_mask = i_mag < 27
+        z_mask = z_mag < 27
 
-        mask = g_mask | r_mask | i_mask | z_mask
+        mask = g_mask & r_mask & i_mask & z_mask
 
         col = ''
         if snid in slsn_list:
