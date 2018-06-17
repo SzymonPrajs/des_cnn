@@ -52,7 +52,7 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
 
         mask = g_mask & r_mask & i_mask & z_mask
 
-        if not sum((r_mag[mask] - i_mag[mask]) > 2) > 0:
+        if not sum((r_mag[mask] - i_mag[mask]) > 1) > 5:
             # print(snid)
             col = ''
             if snid in slsn_list:
