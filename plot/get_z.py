@@ -9,6 +9,7 @@ from tools.des_tools import query_localdb, query_desdm
 
 
 conn = ea.connect()
+df_all = pd.DataFrame()
 
 for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
     SLSN = np.loadtxt('/Users/szymon/Dropbox/'+folder+'.csv', unpack=True)
@@ -19,7 +20,7 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         df = conn.query_to_pandas(query)
         if not df.shape[0] > 0:
             continue
-            
+
         df = df.iloc[0]
 
         print(str(int(snid)))
@@ -28,3 +29,8 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
                   'PHOTOZ',
                   'SPECZ',
                   'SPECZ_CATALOG']])
+
+        if df_all.shape[0] > 0:
+            df_all = pd.concat([df_all, df], ignore_index=True)
+        else:
+            df_all = df
