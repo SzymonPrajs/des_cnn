@@ -11,6 +11,14 @@ slsn_list = [1279517., 1279780., 1281880., 1290780., 1298914.,
              1320152., 1336197., 1340054., 1370309., 1372087.,
              1385229., 1562075.]
 
+snii_list = [1251622, 1279573, 1295744, 1315968, 1502119, 1255005,
+             1279665, 1297218, 1334244, 1532068, 1257895, 1281640,
+             1300562, 1334397, 1537093, 1258194, 1288107, 1302627,
+             1334551, 1576032, 1258210, 1290108, 1306147, 1336197,
+             1576128, 1260282, 1291019, 1309222, 1368286, 1592088,
+             1278517, 1294979, 1309600, 1371110, 1633048, 1279503,
+             1295519, 1310406, 1433017]
+
 def line(y):
     return (y - 21.5) / 1.75
 
@@ -48,11 +56,16 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         if snid in slsn_list:
             ax.plot(r_mag[mask] - i_mag[mask],
                     z_mag[mask],
-                    c='red', lw=2)
+                    c='red', lw=3)
+
+        elif snid in snii_list:
+            ax.plot(r_mag[mask] - i_mag[mask],
+                    z_mag[mask],
+                    c='green', lw=3)
         else:
             ax.plot(g_mag[mask] - i_mag[mask],
                     z_mag[mask],
-                    c='black', alpha=0.4)
+                    c='black', alpha=0.2)
 
         # if sum((g_mag[mask] - z_mag[mask]) > line(g_mag[mask])) > 0:
         #     print(snid)
