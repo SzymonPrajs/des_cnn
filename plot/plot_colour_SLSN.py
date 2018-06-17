@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
 from tools.des_tools import query_localdb
 
-fig, ax = plt.subplots(1, 2, figsize=(20, 20))
+fig, ax = plt.subplots(1, 2, figsize=(10, 20))
 slsn_list = [1279517., 1279780., 1281880., 1290780., 1298914.,
              1320152., 1336197., 1340054., 1370309., 1372087.,
              1385229., 1562075.]
@@ -59,8 +59,8 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
                 ax[0].plot(r_mag[mask] - i_mag[mask],
                            z_mag[mask],
                            c='red', lw=3)
-                ax[1].plot(g_mag[mask] - r_mag[mask],
-                           i_mag[mask],
+                ax[1].plot(g_mag[mask] - z_mag[mask],
+                           r_mag[mask],
                            c='red', lw=3)
 
 
@@ -68,16 +68,16 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
                 ax[0].plot(r_mag[mask] - i_mag[mask],
                            z_mag[mask],
                            c='green', lw=3)
-                ax[1].plot(g_mag[mask] - r_mag[mask],
-                           i_mag[mask],
+                ax[1].plot(g_mag[mask] - z_mag[mask],
+                           r_mag[mask],
                            c='green', lw=3)
 
             else:
                 ax[0].plot(r_mag[mask] - i_mag[mask],
                            z_mag[mask],
                            c='black', alpha=0.2)
-                ax[1].plot(g_mag[mask] - r_mag[mask],
-                           i_mag[mask],
+                ax[1].plot(g_mag[mask] - z_mag[mask],
+                           r_mag[mask],
                            c='black', alpha=0.2)
 
 # y = np.linspace(20, 25, 100)
