@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
 from tools.des_tools import query_localdb
 
-fig, ax = plt.subplots(1, 2, figsize=(20, 8))
+fig, ax = plt.subplots(1, 2, figsize=(40, 20))
 slsn_list = [1279517., 1279780., 1281880., 1290780., 1298914.,
              1320152., 1336197., 1340054., 1370309., 1372087.,
              1385229., 1562075.]
