@@ -1,10 +1,14 @@
 import sys
 import numpy as np
 import pandas as pd
+import easyaccess as ea
 import tools.des_tools as des
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
 from tools.des_tools import query_localdb, query_desdm
+
+
+conn = ea.connect()
 
 for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
     SLSN = np.loadtxt('/Users/szymon/Dropbox/'+folder+'.csv', unpack=True)
@@ -12,7 +16,12 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
 
     for snid in SLSN:
         query = "SELECT * FROM sngals WHERE snid="+str(int(snid))
-        df = query_desdm(query)
+        df = conn.query_to_pandas(query)
+        df = df[0]
 
         print(str(int(snid)))
-        print(df[['DLR', 'PHOTOZ', 'SPECZ', 'SPECZ_CATALOG']])
+        print(df[['SNID',
+                  'DLR',
+                  'PHOTOZ',
+                  'SPECZ',
+                  'SPECZ_CATALOG']])
