@@ -47,11 +47,11 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         col = ''
         if snid in slsn_list:
             ax.plot(g_mag[mask] - r_mag[mask],
-                    i_mag[mask] - z_mag[mask],
+                    z_mag[mask],
                     c='red', lw=2)
         else:
             ax.plot(g_mag[mask] - r_mag[mask],
-                    i_mag[mask] - z_mag[mask],
+                    z_mag[mask],
                     c='black', alpha=0.4)
 
         # if sum((g_mag[mask] - z_mag[mask]) > line(g_mag[mask])) > 0:
