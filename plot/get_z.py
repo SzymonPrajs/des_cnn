@@ -21,7 +21,7 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         if not df.shape[0] > 0:
             continue
 
-        df = df.iloc[0]
+        # df = df.iloc[0]
 
         print(str(int(snid)))
         # print(df[['SNID',
@@ -31,7 +31,7 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         #           'SPECZ_CATALOG']])
 
         if df_all.shape[0] > 0:
-            df_all = pd.concat([df_all.to_frame(), df.to_frame()])
+            df_all = pd.concat([df_all, df])
         else:
             df_all = df.to_frame()
 
