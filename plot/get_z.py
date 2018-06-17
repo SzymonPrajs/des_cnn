@@ -24,13 +24,15 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         df = df.iloc[0]
 
         print(str(int(snid)))
-        print(df[['SNID',
-                  'DLR',
-                  'PHOTOZ',
-                  'SPECZ',
-                  'SPECZ_CATALOG']])
+        # print(df[['SNID',
+        #           'DLR',
+        #           'PHOTOZ',
+        #           'SPECZ',
+        #           'SPECZ_CATALOG']])
 
         if df_all.shape[0] > 0:
             df_all = pd.concat([df_all, df], ignore_index=True)
         else:
             df_all = df
+
+df_all.to_csv('/Users/szymon/Dropbox/SLSN_z.csv', index=False)
