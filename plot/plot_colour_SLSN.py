@@ -28,18 +28,31 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         df = df[df['season'] == season]
         gdf = df.groupby('band')
         g = gdf.get_group('g')
+        r = gdf.get_group('r')
+        i = gdf.get_group('i')
         z = gdf.get_group('z')
+
         g_mag = g['mag'].values
+        r_mag = r['mag'].values
+        i_mag = i['mag'].values
         z_mag = z['mag'].values
+
         g_mask = g_mag < 25
+        r_mask = r_mag < 25
+        i_mask = i_mag < 25
         z_mask = z_mag < 25
-        mask = g_mask & z_mask
+
+        mask = g_mask | r_mask | i_mask | z_mask
 
         col = ''
         if snid in slsn_list:
-            ax.plot(g_mag[mask], z_mag[mask], c='red', lw=2)
+            ax.plot(g_mag[mask] - r_mag[mask],
+                    i_mag[mask] - z_mag[mask],
+                    c='red', lw=2)
         else:
-            ax.plot(g_mag[mask], z_mag[mask], c='black', alpha=0.4)
+            ax.plot(g_mag[mask] - r_mag[mask],
+                    i_mag[mask] - z_mag[mask],
+                    c='black', alpha=0.4)
 
         # if sum((g_mag[mask] - z_mag[mask]) > line(g_mag[mask])) > 0:
         #     print(snid)
@@ -47,4 +60,4 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
 # y = np.linspace(20, 25, 100)
 # x = line(y)
 # plt.plot(x, y, c='blue', lw=2)
-plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours_2.pdf', bbox_inches='tight')
+plt.savefig('/Users/szymon/Dropbox/Plots/SLSN_Colours_all.pdf', bbox_inches='tight')
