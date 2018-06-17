@@ -17,4 +17,8 @@ for folder in ['SLSN_99', 'SLSN_90', 'SLSN_50']:
         if not df.shape[0] > 0:
             continue
 
-        print(df['SNID'], df['DLR'], df['PHOTOZ'], df['SPECZ'], df['SPECZ_CATALOG']
+        print(df['SNID'].values[0],
+              df['DLR'].values[0],
+              df['PHOTOZ'].values[0],
+              df['SPECZ'].values[0],
+              df['SPECZ_CATALOG'].values[0])
